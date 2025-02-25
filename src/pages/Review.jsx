@@ -3,49 +3,40 @@ import DataTable from "react-data-table-component";
 import { FaEye, FaTrash } from "react-icons/fa";
 import ReviewDetailModal from "../components/Review/ReviewDetailModal";
 import { AppContext } from "../context/AppContext";
-
-// Komponen Filter Pencarian
-const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
-    <input
-      type="text"
-      placeholder="Cari Ulasan..."
-      aria-label="Search Input"
-      value={filterText}
-      onChange={onFilter}
-      className="border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all w-full sm:w-72"
-    />
-    <button
-      onClick={onClear}
-      className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors duration-200 w-full sm:w-auto"
-    >
-      Reset Pencarian
-    </button>
-  </div>
-);
+import { toast } from "react-toastify";
 
 const Review = () => {
   useEffect(() => {
     document.title = "AS Denim | Dashboard - Ulasan";
   }, []);
 
-  // Data dummy untuk daftar ulasan
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      site_user_id: 1,
-      user_name: "John Doe",
-      product_id: 1,
-      product_name: "Blue Jeans",
-      rating: 4,
-      review: "Produk ini sangat bagus dan nyaman digunakan.",
-      created_at: "2023-08-15 12:30",
-    },
-    // Tambahkan ulasan lain jika diperlukan
-  ]);
-
+  const { authFetch } = useContext(AppContext);
+  const [reviews, setReviews] = useState([]);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
+
+  // Ambil data ulasan dari API admin
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await authFetch("/api/admin/reviews", {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setReviews(data.reviews);
+        } else {
+          toast.error("Gagal mengambil ulasan.");
+        }
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+        toast.error("Terjadi kesalahan saat mengambil ulasan.");
+      }
+    };
+
+    fetchReviews();
+  }, [authFetch]);
 
   const openDetailModal = (review) => {
     setSelectedReview(review);
@@ -57,28 +48,23 @@ const Review = () => {
     setIsDetailModalOpen(false);
   };
 
-  // Fungsi untuk menghapus ulasan
-  const deleteReview = (reviewId) => {
-    if (window.confirm("Apakah Anda yakin ingin menghapus ulasan ini?")) {
-      setReviews((prevReviews) =>
-        prevReviews.filter((review) => review.id !== reviewId)
-      );
-    }
-  };
-
   // State untuk filter pencarian
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   // Filter data ulasan berdasarkan nama pengguna, produk, atau isi ulasan
-  const filteredReviews = reviews.filter(
-    (review) =>
-      review.user_name.toLowerCase().includes(filterText.toLowerCase()) ||
-      review.product_name.toLowerCase().includes(filterText.toLowerCase()) ||
-      review.review.toLowerCase().includes(filterText.toLowerCase())
-  );
+  const filteredReviews = reviews.filter((review) => {
+    const userName = review.user?.name || "";
+    const productName = review.product?.product_name || "";
+    const reviewContent = review.review || "";
+    return (
+      userName.toLowerCase().includes(filterText.toLowerCase()) ||
+      productName.toLowerCase().includes(filterText.toLowerCase()) ||
+      reviewContent.toLowerCase().includes(filterText.toLowerCase())
+    );
+  });
 
-  // Sub header untuk DataTable: filter pencarian
+  // Sub header untuk DataTable (filter pencarian)
   const subHeaderComponent = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -88,11 +74,22 @@ const Review = () => {
     };
 
     return (
-      <FilterComponent
-        onFilter={(e) => setFilterText(e.target.value)}
-        onClear={handleClear}
-        filterText={filterText}
-      />
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
+        <input
+          type="text"
+          placeholder="Cari Ulasan..."
+          aria-label="Search Input"
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+          className="border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all w-full sm:w-72"
+        />
+        <button
+          onClick={handleClear}
+          className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors duration-200 w-full sm:w-auto"
+        >
+          Reset Pencarian
+        </button>
+      </div>
     );
   }, [filterText, resetPaginationToggle]);
 
@@ -106,13 +103,13 @@ const Review = () => {
     },
     {
       name: "Nama Pengguna",
-      selector: (row) => row.user_name,
+      selector: (row) => row.user?.name || "Unknown",
       sortable: true,
       minWidth: "150px",
     },
     {
       name: "Produk",
-      selector: (row) => row.product_name,
+      selector: (row) => row.product?.product_name || "Unknown",
       sortable: true,
       minWidth: "150px",
     },
@@ -125,7 +122,17 @@ const Review = () => {
     },
     {
       name: "Tanggal",
-      selector: (row) => row.created_at,
+      selector: (row) => {
+        const date = new Date(row.created_at);
+        return date.toLocaleString("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        });
+      },
       sortable: true,
       minWidth: "150px",
     },
@@ -140,13 +147,6 @@ const Review = () => {
           >
             <FaEye />
           </button>
-          <button
-            onClick={() => deleteReview(row.id)}
-            className="text-lg text-red-500 hover:text-red-600 mx-1"
-            title="Hapus Ulasan"
-          >
-            <FaTrash />
-          </button>
         </div>
       ),
       ignoreRowClick: true,
@@ -157,7 +157,6 @@ const Review = () => {
     },
   ];
 
-  // Custom Styles untuk DataTable
   const customStyles = {
     table: {
       style: {

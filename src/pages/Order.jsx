@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import { FaEye } from "react-icons/fa";
 import OrderDetailModal from "../components/Order/OrderDetailModal";
 import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 // Komponen Filter (pencarian dan reset)
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
@@ -30,7 +31,7 @@ const Order = () => {
     document.title = "AS Denim | Dashboard - Pesanan";
   }, []);
 
-  // State untuk data pesanan yang diambil dari API
+  // State untuk data pesanan
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [errorOrders, setErrorOrders] = useState(null);
@@ -41,16 +42,16 @@ const Order = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await authFetch("http://127.0.0.1:8000/api/admin/orders", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-          },
-          // credentials: "include", // jika diperlukan untuk autentikasi
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        const response = await authFetch(
+          "http://127.0.0.1:8000/api/admin/orders",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         setOrders(data);
       } catch (error) {
@@ -62,7 +63,7 @@ const Order = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [authFetch]);
 
   // Modal detail pesanan
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
@@ -78,13 +79,41 @@ const Order = () => {
     setIsDetailModalOpen(false);
   };
 
-  // Handler untuk mengubah status pesanan (misalnya, setelah update)
-  const updateOrderStatus = (orderId, newStatus) => {
-    setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
-    );
+  // Fungsi untuk mengupdate status pesanan menggunakan fetch
+  const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const response = await authFetch(
+        `http://127.0.0.1:8000/api/admin/orders/${orderId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
+
+      // Parsing respons JSON
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Gagal memperbarui status pesanan.");
+      }
+
+      // Perbarui state orders hanya untuk properti status saja agar properti lain tidak hilang
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === orderId ? { ...order, status: newStatus } : order
+        )
+      );
+
+      // Tampilkan toast dengan pesan dari API
+      toast.success(data.message);
+    } catch (error) {
+      console.error("Gagal memperbarui status pesanan:", error);
+      alert("Terjadi kesalahan saat memperbarui status pesanan.");
+    }
   };
 
   // State untuk pencarian
@@ -98,7 +127,7 @@ const Order = () => {
       order.user_name.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  // Sub header untuk DataTable: filter pencarian
+  // Sub header untuk DataTable (filter pencarian)
   const subHeaderComponent = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -148,7 +177,7 @@ const Order = () => {
           year: "numeric",
           hour: "2-digit",
           minute: "2-digit",
-          hour12: false, // Menggunakan format 24 jam
+          hour12: false,
         });
       },
       sortable: true,
@@ -191,6 +220,7 @@ const Order = () => {
     },
   ];
 
+  // Custom styles untuk DataTable
   const customStyles = {
     table: {
       style: {

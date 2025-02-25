@@ -9,16 +9,23 @@ const ReviewDetailModal = ({ isOpen, onClose, review }) => {
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Informasi Ulasan</h2>
         <p>
-          <strong>Nama Pengguna:</strong> {review.user_name}
+          <strong>Nama Pengguna:</strong> {review.user?.name}
         </p>
         <p>
-          <strong>Produk:</strong> {review.product_name}
+          <strong>Produk:</strong> {review.product?.product_name || "N/A"}
         </p>
         <p>
           <strong>Rating:</strong> {review.rating} / 5
         </p>
         <p>
-          <strong>Tanggal:</strong> {review.created_at}
+          <strong>Tanggal:</strong> {new Date(review.created_at).toLocaleString('id-ID', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            })}
         </p>
       </div>
       {/* Isi Ulasan */}

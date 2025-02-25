@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from '../Modal';
-import { AppContext } from "../../context/AppContext";
 
 const OrderDetailModal = ({ isOpen, onClose, order, updateOrderStatus }) => {
   const [status, setStatus] = useState('');
@@ -18,6 +17,7 @@ const OrderDetailModal = ({ isOpen, onClose, order, updateOrderStatus }) => {
   };
 
   const handleUpdateStatus = () => {
+    // Panggil fungsi updateOrderStatus (async) untuk mengirim update ke backend
     updateOrderStatus(order.id, status);
     onClose();
   };
@@ -97,6 +97,9 @@ const OrderDetailModal = ({ isOpen, onClose, order, updateOrderStatus }) => {
           <h2 className="text-lg font-semibold mb-2">Informasi Pelanggan</h2>
           <p>
             <strong>Penerima:</strong> {order.address?.recipient_name || 'N/A'}
+          </p>
+          <p>
+            <strong>Nomor Telepon:</strong> {order.address?.phone_number || 'N/A'}
           </p>
           <p>
             <strong>Alamat:</strong> {order.address?.address_line1 || 'N/A'},{' '}

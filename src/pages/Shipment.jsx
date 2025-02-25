@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import { FaEye } from "react-icons/fa";
 import ShipmentDetailModal from "../components/Shipment/ShipmentDetailModal";
 import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 // Komponen Filter untuk pencarian dan reset
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
@@ -26,28 +27,42 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
 const Shipment = () => {
+  const { authFetch } = useContext(AppContext);
+  const [shipments, setShipments] = useState([]);
+  const [loadingShipments, setLoadingShipments] = useState(true);
+  const [errorShipments, setErrorShipments] = useState(null);
+
+  // Set judul halaman
   useEffect(() => {
     document.title = "AS Denim | Dashboard - Pengiriman";
   }, []);
 
-  // Data dummy untuk daftar pengiriman
-  const [shipments, setShipments] = useState([
-    {
-      id: 1,
-      order_id: 1,
-      order_number: "ORD-123456",
-      courier: "JNE",
-      service: "REG",
-      tracking_number: "JNE1234567890",
-      status: "pending",
-      created_at: "2023-08-15 16:00",
-      order: {
-        user_name: "John Doe",
-      },
-    },
-    // Tambahkan pengiriman lain jika diperlukan
-  ]);
+  // Ambil data pengiriman dari backend
+  useEffect(() => {
+    const fetchShipments = async () => {
+      try {
+        const response = await authFetch("http://127.0.0.1:8000/api/admin/shipments", {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        // Ambil data dari key shipments
+        setShipments(Array.isArray(data.shipments) ? data.shipments : []);
+      } catch (error) {
+        console.error("Error fetching shipments:", error);
+        setErrorShipments(error);
+      } finally {
+        setLoadingShipments(false);
+      }
+    };
 
+    fetchShipments();
+  }, [authFetch]);
+
+  // Modal detail pengiriman
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState(null);
 
@@ -61,25 +76,43 @@ const Shipment = () => {
     setIsDetailModalOpen(false);
   };
 
-  // Handler untuk memperbarui pengiriman
-  const updateShipment = (shipmentId, updatedData) => {
-    setShipments((prevShipments) =>
-      prevShipments.map((shipment) =>
-        shipment.id === shipmentId ? { ...shipment, ...updatedData } : shipment
-      )
-    );
+  // Fungsi untuk memperbarui data pengiriman melalui API
+  const updateShipment = async (shipmentId, updatedData) => {
+    try {
+      const response = await authFetch(`http://127.0.0.1:8000/api/admin/shipments/${shipmentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Gagal memperbarui pengiriman.");
+      }
+      // Perbarui state secara optimistik
+      setShipments((prevShipments) =>
+        prevShipments.map((shipment) =>
+          shipment.id === shipmentId ? { ...shipment, ...updatedData } : shipment
+        )
+      );
+      toast.success(data.message);
+    } catch (error) {
+      console.error("Gagal memperbarui pengiriman:", error);
+      toast.error("Terjadi kesalahan saat memperbarui pengiriman.");
+    }
   };
 
   // State untuk filter pencarian
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
-  // Filter data pengiriman berdasarkan No. Pesanan atau Nama Pelanggan
-  const filteredShipments = shipments.filter(
-    (shipment) =>
-      shipment.order_number.toLowerCase().includes(filterText.toLowerCase()) ||
-      (shipment.order &&
-        shipment.order.user_name.toLowerCase().includes(filterText.toLowerCase()))
+  // Filter data pengiriman berdasarkan nomor pesanan atau nama pelanggan
+  const filteredShipments = shipments.filter((shipment) =>
+    ((shipment.order?.order_number || "").toLowerCase().includes(filterText.toLowerCase())) ||
+    ((shipment.order?.user?.name || "").toLowerCase().includes(filterText.toLowerCase())) ||
+    ((shipment.tracking_number || "").toLowerCase().includes(filterText.toLowerCase()))
   );
 
   // Sub Header untuk DataTable (filter pencarian)
@@ -110,15 +143,15 @@ const Shipment = () => {
     },
     {
       name: "No. Pesanan",
-      selector: (row) => row.order_number,
+      selector: (row) => row.order?.order_number,
       sortable: true,
-      minWidth: "150px",
+      minWidth: "180px",
     },
     {
       name: "Nama Pelanggan",
-      selector: (row) => row.order.user_name,
+      selector: (row) => row.order?.user?.name,
       sortable: true,
-      minWidth: "150px",
+      minWidth: "180px",
     },
     {
       name: "Kurir",
@@ -220,31 +253,39 @@ const Shipment = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Pengiriman</h1>
-      <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
-        <DataTable
-          columns={columns}
-          data={filteredShipments}
-          pagination
-          paginationPerPage={5}
-          paginationRowsPerPageOptions={[5, 10, 15, 20, 50]}
-          paginationComponentOptions={{
-            rowsPerPageText: "Baris per halaman:",
-            rangeSeparatorText: "dari",
-          }}
-          responsive
-          highlightOnHover
-          striped
-          customStyles={customStyles}
-          subHeader
-          subHeaderComponent={subHeaderComponent}
-          paginationResetDefaultPage={resetPaginationToggle}
-          noDataComponent={
-            <div className="p-4 text-center text-gray-500">
-              Tidak ada pengiriman.
-            </div>
-          }
-        />
-      </div>
+      {loadingShipments ? (
+        <p className="text-center text-gray-500">Memuat pengiriman...</p>
+      ) : errorShipments ? (
+        <p className="text-center text-red-500">
+          Terjadi kesalahan saat mengambil pengiriman.
+        </p>
+      ) : (
+        <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+          <DataTable
+            columns={columns}
+            data={filteredShipments}
+            pagination
+            paginationPerPage={5}
+            paginationRowsPerPageOptions={[5, 10, 15, 20, 50]}
+            paginationComponentOptions={{
+              rowsPerPageText: "Baris per halaman:",
+              rangeSeparatorText: "dari",
+            }}
+            responsive
+            highlightOnHover
+            striped
+            customStyles={customStyles}
+            subHeader
+            subHeaderComponent={subHeaderComponent}
+            paginationResetDefaultPage={resetPaginationToggle}
+            noDataComponent={
+              <div className="p-4 text-center text-gray-500">
+                Tidak ada pengiriman.
+              </div>
+            }
+          />
+        </div>
+      )}
 
       {/* Modal Detail Pengiriman */}
       <ShipmentDetailModal

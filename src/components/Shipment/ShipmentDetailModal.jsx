@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
-import Modal from '../Modal';
+import { useState, useEffect } from "react";
+import Modal from "../Modal";
 
 const ShipmentDetailModal = ({ isOpen, onClose, shipment, updateShipment }) => {
   const [formData, setFormData] = useState({
-    courier: '',
-    service: '',
-    tracking_number: '',
-    status: '',
+    courier: "",
+    service: "",
+    tracking_number: "",
+    status: "",
   });
 
-  // Update formData saat shipment berubah
+  // Perbarui formData saat shipment berubah
   useEffect(() => {
     if (shipment) {
       setFormData({
         courier: shipment.courier,
         service: shipment.service,
-        tracking_number: shipment.tracking_number || '',
+        tracking_number: shipment.tracking_number || "",
         status: shipment.status,
       });
     }
@@ -39,18 +39,24 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment, updateShipment }) => {
         <div>
           <h2 className="text-lg font-semibold mb-2">Informasi Pengiriman</h2>
           <p>
-            <strong>No. Pesanan:</strong> {shipment.order_number}
+            <strong>No. Pesanan:</strong> {shipment.order?.order_number}
           </p>
           <p>
-            <strong>Nama Pelanggan:</strong> {shipment.order.user_name}
+            <strong>Nama Pelanggan:</strong> {shipment.order?.user?.name}
           </p>
           <p>
-            <strong>Tanggal:</strong> {shipment.created_at}
+            <strong>Tanggal:</strong> {new Date(shipment.created_at).toLocaleString("id-ID", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            })}
           </p>
         </div>
-        {/* Detail Pengiriman */}
+        {/* Form Detail Pengiriman */}
         <div>
-          {/* Kurir */}
           <div className="mb-2">
             <label className="block font-semibold mb-1">Kurir</label>
             <input
@@ -61,7 +67,6 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment, updateShipment }) => {
               className="w-full border px-3 py-2 rounded"
             />
           </div>
-          {/* Layanan */}
           <div className="mb-2">
             <label className="block font-semibold mb-1">Layanan</label>
             <input
@@ -72,7 +77,6 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment, updateShipment }) => {
               className="w-full border px-3 py-2 rounded"
             />
           </div>
-          {/* Nomor Resi */}
           <div className="mb-2">
             <label className="block font-semibold mb-1">Nomor Resi</label>
             <input
@@ -84,7 +88,6 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment, updateShipment }) => {
               placeholder="Masukkan nomor resi"
             />
           </div>
-          {/* Status Pengiriman */}
           <div className="mb-2">
             <label className="block font-semibold mb-1">Status Pengiriman</label>
             <select
@@ -99,7 +102,7 @@ const ShipmentDetailModal = ({ isOpen, onClose, shipment, updateShipment }) => {
             </select>
           </div>
         </div>
-        {/* Tombol */}
+        {/* Tombol Aksi */}
         <div className="flex justify-end space-x-3">
           <button
             type="button"

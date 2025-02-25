@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect, useCallback, useRef } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -15,37 +15,11 @@ const AppProvider = ({ children }) => {
   });
   const navigate = useNavigate();
 
-  const INACTIVITY_TIMEOUT = 15 * 60 * 1000;
-  let inactivityTimer = null;
+  const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 menit
 
-  const resetInactivityTimer = () => {
-    clearTimeout(inactivityTimer);
-    inactivityTimer = setTimeout(() => {
-      handleLogout();
-      toast.info("Sesi Anda telah berakhir karena tidak ada aktivitas.");
-    }, INACTIVITY_TIMEOUT);
-  };
-
-  const handleLogout = useCallback(async () => {
-    try {
-      // Panggil API logout untuk menghapus token di server
-      const response = await authFetch("/api/admin/logout", {
-        method: "POST",
-      });
-
-      if (!response.ok) {
-        // Jika terjadi error pada API logout, kita tetap menghapus token secara lokal
-        console.error("Logout API error:", await response.text());
-      }
-    } catch (error) {
-      console.error("Error saat logout:", error);
-    } finally {
-      updateToken(null);
-      updateUser(null);
-      navigate("/login");
-      toast.success("Anda berhasil keluar");
-    }
-  }, [navigate]);
+  // Gunakan useRef untuk menyimpan timer dan flag logout
+  const inactivityTimerRef = useRef(null);
+  const hasLoggedOutRef = useRef(false);
 
   // Update token di state dan sessionStorage
   const updateToken = (newToken) => {
@@ -67,6 +41,7 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  // authFetch untuk request API dengan header Authorization
   const authFetch = useCallback(
     async (url, options = {}) => {
       const defaultHeaders = {
@@ -81,20 +56,18 @@ const AppProvider = ({ children }) => {
 
       const mergedOptions = {
         ...options,
-        headers: {
-          ...defaultHeaders,
-          ...options.headers,
-        },
+        headers: { ...defaultHeaders, ...options.headers },
       };
 
       try {
         const response = await fetch(url, mergedOptions);
-
         if (response.status === 401) {
-          handleLogout();
-          toast.error("Sesi Anda telah berakhir. Silakan login kembali.");
+          // Hanya panggil logout sekali
+          if (!hasLoggedOutRef.current) {
+            handleLogout();
+            toast.error("Sesi Anda telah berakhir. Silakan login kembali.");
+          }
         }
-
         return response;
       } catch (error) {
         console.error("Network error:", error);
@@ -102,8 +75,42 @@ const AppProvider = ({ children }) => {
         throw error;
       }
     },
-    [token, handleLogout]
+    [token] // Jangan masukkan handleLogout agar tidak terjadi dependency circular
   );
+
+  // Fungsi logout (pastikan hanya dipanggil sekali)
+  const handleLogout = useCallback(async () => {
+    if (hasLoggedOutRef.current) return; // Cegah logout ganda
+    hasLoggedOutRef.current = true;
+    try {
+      const response = await authFetch("/api/admin/logout", {
+        method: "POST",
+      });
+      if (!response.ok) {
+        console.error("Logout API error:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error saat logout:", error);
+    } finally {
+      updateToken(null);
+      updateUser(null);
+      navigate("/login");
+      toast.success("Anda berhasil keluar");
+    }
+  }, [navigate, authFetch]);
+
+  // Reset timer inaktivitas
+  const resetInactivityTimer = useCallback(() => {
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+    }
+    inactivityTimerRef.current = setTimeout(() => {
+      if (!hasLoggedOutRef.current) {
+        handleLogout();
+        toast.info("Sesi Anda telah berakhir karena tidak ada aktivitas.");
+      }
+    }, INACTIVITY_TIMEOUT);
+  }, [handleLogout]);
 
   useEffect(() => {
     if (token) {
@@ -114,21 +121,20 @@ const AppProvider = ({ children }) => {
         "scroll",
         "touchstart",
       ];
-
       activityEvents.forEach((eventName) => {
         window.addEventListener(eventName, resetInactivityTimer);
       });
-
       resetInactivityTimer();
-
       return () => {
         activityEvents.forEach((eventName) => {
           window.removeEventListener(eventName, resetInactivityTimer);
         });
-        clearTimeout(inactivityTimer);
+        if (inactivityTimerRef.current) {
+          clearTimeout(inactivityTimerRef.current);
+        }
       };
     }
-  }, [token]);
+  }, [token, resetInactivityTimer]);
 
   const value = {
     token,
