@@ -10,6 +10,7 @@ import {
   FaUsers,
   FaStar,
   FaUserShield,
+  FaChartLine, // Import ikon untuk laporan penjualan
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -22,6 +23,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: 'Pengiriman', icon: <FaTruck />, path: '/shipments' },
     { name: 'Pengguna', icon: <FaUsers />, path: '/users' },
     { name: 'Ulasan Produk', icon: <FaStar />, path: '/reviews' },
+    { name: 'Laporan Penjualan', icon: <FaChartLine />, path: '/report' },
     { name: 'Admin', icon: <FaUserShield />, path: '/admins' },
   ];
 

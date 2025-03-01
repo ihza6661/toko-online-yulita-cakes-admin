@@ -19,6 +19,7 @@ import Profile from "./pages/Profile";
 import Login from "./components/Login";
 
 import { AppContext } from "./context/AppContext";
+import SalesReport from "./pages/SaleReport";
 
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
                 <Route path="/shipments" element={<Shipment />} />
                 <Route path="/users" element={<User />} />
                 <Route path="/reviews" element={<Review />} />
+                <Route path="/report" element={<SalesReport />} />
                 <Route path="/admins" element={<Admin />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
