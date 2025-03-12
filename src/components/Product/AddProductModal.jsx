@@ -11,7 +11,6 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
     category_id: "",
     original_price: "",
     sale_price: "",
-    size: "",
     stock: "",
     weight: "",
     description: "",
@@ -138,7 +137,6 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
           category_id: "",
           original_price: "",
           sale_price: "",
-          size: "",
           stock: "",
           weight: "",
           description: "",
@@ -254,25 +252,6 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
         </div>
         {/* Ukuran, Stok, Berat */}
         <div className="grid grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Ukuran
-            </label>
-            <input
-              type="text"
-              name="size"
-              value={formData.size}
-              onChange={handleChange}
-              required
-              placeholder="Misal: M"
-              className={`w-full border ${
-                errors.size ? "border-red-500" : "border-gray-300"
-              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            />
-            {errors.size && (
-              <p className="text-red-500 text-sm mt-1">{errors.size[0]}</p>
-            )}
-          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Stok

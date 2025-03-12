@@ -74,7 +74,7 @@ const Review = () => {
     };
 
     return (
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row  items-center justify-between gap-3 mb-6">
         <input
           type="text"
           placeholder="Cari Ulasan..."
