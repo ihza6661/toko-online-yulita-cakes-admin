@@ -6,7 +6,11 @@
 
 * {
   font-family: Outfit;
+  /* background: linear-gradient(to bottom, #ffebef, #ffe4e1); */
 }
+body {
+}
+
 select,
 input,
 textarea {

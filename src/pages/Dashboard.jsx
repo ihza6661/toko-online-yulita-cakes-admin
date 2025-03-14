@@ -23,7 +23,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "AS Denim | Dashboard";
+    document.title = "Yulita Cakes | Dashboard";
     fetchSummary();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -10,7 +10,7 @@ import {
   FaUsers,
   FaStar,
   FaUserShield,
-  FaChartLine, // Import ikon untuk laporan penjualan
+  FaChartLine,
 } from 'react-icons/fa';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -39,17 +39,17 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       )}
 
       <aside
-        className={`fixed top-16 bottom-0 md:sticky md:top-16 md:block z-40 bg-gray-800 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-16 bottom-0 md:sticky md:top-16 md:block z-40 bg-pink-100 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 w-64`}
+        } md:translate-x-0 w-64 shadow-lg`}
       >
         <div className="flex flex-col h-full">
           {/* Header Mobile */}
-          <div className="flex items-center justify-between p-4 md:hidden bg-gray-900">
-            <h1 className="text-white text-lg font-semibold">Menu</h1>
+          <div className="flex items-center justify-between p-4 md:hidden bg-pink-100">
+            <h1 className="text-brown-700 text-lg font-bold">Menu</h1>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-2 text-white hover:text-gray-300 focus:outline-none"
+              className="p-2 text-brown-700 hover:text-brown-500 focus:outline-none"
               aria-label="Close Sidebar"
             >
               <FaTimes className="w-6 h-6" />
@@ -64,12 +64,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 to={item.path}
                 onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 transition-colors ${
-                    isActive ? 'bg-gray-700 font-semibold' : ''
+                  `flex items-center px-6 py-3 text-brown-700 hover:bg-pink-200 transition-colors ${
+                    isActive ? 'bg-pink-4 00 font-bold text-white' : ''
                   }`
                 }
               >
-                <span className="mr-4">{item.icon}</span>
+                <span className="mr-4 text-brown-600">{item.icon}</span>
                 {item.name}
               </NavLink>
             ))}
