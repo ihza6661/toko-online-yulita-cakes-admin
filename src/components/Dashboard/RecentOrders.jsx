@@ -13,12 +13,12 @@ const RecentOrders = () => {
         const response = await authFetch("/api/admin/dashboard/recent_orders", {
           method: "GET",
         });
-        if (!response.ok) throw new Error("Gagal mengambil data pesanan terbaru");
+        if (!response.ok) throw new Error("Gagal mengambil data Orderan terbaru");
         const ordersData = await response.json();
         setRecentOrders(ordersData);
       } catch (error) {
         console.error(error);
-        toast.error("Terjadi kesalahan saat mengambil data pesanan terbaru");
+        toast.error("Terjadi kesalahan saat mengambil data Orderan terbaru");
       } finally {
         setLoading(false);
       }
@@ -30,14 +30,14 @@ const RecentOrders = () => {
   if (loading) {
     return (
       <div className="text-center text-gray-500 p-4">
-        Loading recent orders...
+        Memuat orderan terbaru...
       </div>
     );
   }
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Recent Orders</h2>
+      <h2 className="text-xl bg-pink-200 inline-block p-2 px-5 rounded-lg font-bold mb-4">Orderan Terbaru</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow rounded">
           <thead>

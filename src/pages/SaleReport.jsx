@@ -96,11 +96,12 @@ const SalesReport = () => {
   };
 
   // Filter data berdasarkan pencarian (misalnya berdasarkan nomor order atau nama produk)
-  const filteredReports = salesReports.filter((report) =>
-    (report.order_number &&
-      report.order_number.toLowerCase().includes(filterText.toLowerCase())) ||
-    (report.product_name &&
-      report.product_name.toLowerCase().includes(filterText.toLowerCase()))
+  const filteredReports = salesReports.filter(
+    (report) =>
+      (report.order_number &&
+        report.order_number.toLowerCase().includes(filterText.toLowerCase())) ||
+      (report.product_name &&
+        report.product_name.toLowerCase().includes(filterText.toLowerCase()))
   );
 
   const columns = [
@@ -167,7 +168,7 @@ const SalesReport = () => {
   const customStyles = {
     headRow: {
       style: {
-        backgroundColor: "#f3f4f6",
+        backgroundColor: "#fce7f3", // Soft pink background
       },
     },
     headCells: {
@@ -202,12 +203,12 @@ const SalesReport = () => {
     });
     const marginLeft = 40;
     const marginTop = 40;
-    
-    // Tampilkan nama toko "AS Denim"
+
+    // Tampilkan nama toko "Yulita Cakes"
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
-    doc.text("AS Denim", marginLeft, marginTop);
-    
+    doc.text("Yulita Cakes", marginLeft, marginTop);
+
     // Judul laporan
     doc.setFont("helvetica", "normal");
     doc.setFontSize(16);
@@ -228,13 +229,22 @@ const SalesReport = () => {
         year: "numeric",
       });
       doc.setFontSize(12);
-      doc.text(`Periode: ${formattedStart} s/d ${formattedEnd}`, marginLeft, startY);
+      doc.text(
+        `Periode: ${formattedStart} s/d ${formattedEnd}`,
+        marginLeft,
+        startY
+      );
       startY += 20;
     }
 
     // Gambar garis pemisah
     doc.setLineWidth(0.5);
-    doc.line(marginLeft, startY, doc.internal.pageSize.getWidth() - marginLeft, startY);
+    doc.line(
+      marginLeft,
+      startY,
+      doc.internal.pageSize.getWidth() - marginLeft,
+      startY
+    );
     startY += 10;
 
     // Header tabel untuk PDF
@@ -281,12 +291,14 @@ const SalesReport = () => {
       <h1 className="text-3xl font-bold mb-6">Laporan Penjualan</h1>
 
       {/* Form Filter Tanggal */}
+      <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
           fetchSalesReports();
         }}
-        className="flex flex-wrap gap-4 mb-6"
+        className="flex flex-wrap gap-3 my-3"
       >
         <div>
           <label className="block text-gray-700 mb-1">Tanggal Mulai</label>
@@ -308,7 +320,7 @@ const SalesReport = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded self-end"
+          className="bg-pink-400 text-white px-4 py-2 rounded-xl self-end"
         >
           Filter
         </button>
@@ -324,19 +336,20 @@ const SalesReport = () => {
       <div className="mb-4">
         <button
           onClick={downloadPDF}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-200"
+          className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition-colors duration-200"
         >
           Download PDF
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg p-4">
+      <div className="bg-white rounded-xl shadow-lg p-3 overflow-x-auto">
+
         <DataTable
           columns={columns}
           data={filteredReports}
           pagination
-          paginationPerPage={5}
-          paginationRowsPerPageOptions={[5, 10, 15, 20, 50]}
+          paginationPerPage={10}
+          paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
           paginationComponentOptions={{
             rowsPerPageText: "Baris per halaman:",
             rangeSeparatorText: "dari",
@@ -348,12 +361,13 @@ const SalesReport = () => {
           paginationResetDefaultPage={resetPaginationToggle}
           noDataComponent={
             <div className="p-4 text-center text-gray-500">
-              Tidak ada laporan penjualan.
+              Belum ada laporan penjualan.
             </div>
           }
         />
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
 

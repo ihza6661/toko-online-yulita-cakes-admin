@@ -1,13 +1,11 @@
-const SummaryCard = ({ title, value, icon }) => {
+const SummaryCard = ({ title, value, icon, className }) => {
   return (
-    <div className="flex items-center p-4 bg-white rounded shadow">
-      <div className="flex-shrink-0">{icon}</div>
-      <div className="ml-4">
-        <p className="text-gray-500">{title}</p>
-        <p className="text-xl font-bold">{value}</p>
+    <div className={`p-6 rounded-3xl flex items-center gap-4 ${className}`}>
+      {icon}
+      <div>
+        <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
+        <p className="text-2xl font-bold text-gray-900">{value}</p>
       </div>
     </div>
   );
 };
-
-export default SummaryCard;

@@ -1,31 +1,32 @@
 import { NavLink } from 'react-router-dom';
-import {
+import { 
+  FaHome, 
+  FaThList, 
+  FaCubes, 
+  FaClipboardList, 
+  FaCreditCard, 
+  FaTruckMoving, 
+  FaUserFriends, 
+  FaCommentDots, 
+  FaChartBar, 
+  FaUserCog,
   FaTimes,
-  FaTachometerAlt,
-  FaBoxOpen,
-  FaTags,
-  FaShoppingCart,
-  FaMoneyBillWave,
-  FaTruck,
-  FaUsers,
-  FaStar,
-  FaUserShield,
-  FaChartLine,
 } from 'react-icons/fa';
+
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const menuItems = [
-    { name: 'Dashboard', icon: <FaTachometerAlt />, path: '/' },
-    { name: 'Kategori', icon: <FaTags />, path: '/categories' },
-    { name: 'Produk', icon: <FaBoxOpen />, path: '/products' },
-    { name: 'Pesanan', icon: <FaShoppingCart />, path: '/orders' },
-    { name: 'Pembayaran', icon: <FaMoneyBillWave />, path: '/payments' },
-    { name: 'Pengiriman', icon: <FaTruck />, path: '/shipments' },
-    { name: 'Pengguna', icon: <FaUsers />, path: '/users' },
-    { name: 'Ulasan Produk', icon: <FaStar />, path: '/reviews' },
-    { name: 'Laporan Penjualan', icon: <FaChartLine />, path: '/report' },
-    { name: 'Admin', icon: <FaUserShield />, path: '/admins' },
-  ];
+    { name: 'DASBOR', icon: <FaHome />, path: '/' },
+    { name: 'KATEGORI', icon: <FaThList />, path: '/categories' },
+    { name: 'PRODUK', icon: <FaCubes />, path: '/products' },
+    { name: 'PESANAN', icon: <FaClipboardList />, path: '/orders' },
+    { name: 'PEMBAYARAN', icon: <FaCreditCard />, path: '/payments' },
+    { name: 'PENGIRIMAN', icon: <FaTruckMoving />, path: '/shipments' },
+    { name: 'PENGGUNA', icon: <FaUserFriends />, path: '/users' },
+    { name: 'ULASAN PRODUK', icon: <FaCommentDots />, path: '/reviews' },
+    { name: 'LAPORAN PENJUALAN', icon: <FaChartBar />, path: '/report' },
+    { name: 'ADMIN', icon: <FaUserCog />, path: '/admins' },
+];
 
   return (
     <>
@@ -38,10 +39,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         />
       )}
 
-      <aside
-        className={`fixed top-16 bottom-0 md:sticky md:top-16 md:block z-40 bg-pink-100 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 w-64 shadow-lg`}
+<aside
+  className={`fixed top-0 left-0 bottom-0 md:sticky md:top-16 md:block z-40 bg-pink-100 shadow-lg w-64 
+  transform transition-transform duration-300 ease-in-out ${
+    isOpen ? 'translate-x-0' : '-translate-x-full'
+  } md:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           {/* Header Mobile */}
@@ -65,7 +67,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
                   `flex items-center px-6 py-3 text-brown-700 hover:bg-pink-200 transition-colors ${
-                    isActive ? 'bg-pink-4 00 font-bold text-white' : ''
+                    isActive ? 'bg-pink-200 font-bold text-pink-500' : ''
+
                   }`
                 }
               >

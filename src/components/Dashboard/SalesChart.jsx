@@ -22,12 +22,12 @@ const SalesChart = () => {
         const response = await authFetch("/api/admin/dashboard/sales_data", {
           method: "GET",
         });
-        if (!response.ok) throw new Error("Gagal mengambil data sales chart");
+        if (!response.ok) throw new Error("Gagal mengambil data Grafik Penjualan");
         const chartData = await response.json();
         setData(chartData);
       } catch (error) {
         console.error(error);
-        toast.error("Terjadi kesalahan saat mengambil data sales chart");
+        toast.error("Terjadi kesalahan saat mengambil data Grafik Penjualan");
       } finally {
         setLoading(false);
       }
@@ -38,12 +38,12 @@ const SalesChart = () => {
 
   if (loading)
     return (
-      <div className="p-4 text-center text-gray-500">Loading chart...</div>
+      <div className="p-4 text-center text-gray-500">Memuat Grafik Penjualan...</div>
     );
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Sales Over Time</h2>
+      <h2 className="text-xl bg-pink-200 inline-block p-2 px-5 rounded-lg font-bold mb-4">Grafik Penjualan</h2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           data={data}

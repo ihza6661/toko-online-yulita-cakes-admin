@@ -27,38 +27,39 @@ const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
-      <ToastContainer />
-      {token ? (
-        <>
-          <Navbar setIsSidebarOpen={setIsSidebarOpen} />
-          <div className="mt-16 flex flex-1 overflow-hidden">
-            <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-            <main className="flex-1 p-4 md:p-8 overflow-auto">
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/products" element={<Product />} />
-                <Route path="/categories" element={<Category />} />
-                <Route path="/orders" element={<Order />} />
-                <Route path="/payments" element={<Payment />} />
-                <Route path="/shipments" element={<Shipment />} />
-                <Route path="/users" element={<User />} />
-                <Route path="/reviews" element={<Review />} />
-                <Route path="/report" element={<SalesReport />} />
-                <Route path="/admins" element={<Admin />} />
-                <Route path="*" element={<Navigate to="/" />} />
-              </Routes>
-            </main>
-          </div>
-        </>
-      ) : (
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
-      )}
-    </div>
+    <div className="bg-gradient-to-b from-pink-200 to-yellow-50 min-h-screen flex flex-col">
+    <ToastContainer />
+    {token ? (
+      <>
+        <Navbar setIsSidebarOpen={setIsSidebarOpen} />
+        <div className="mt-16 flex flex-1 overflow-hidden ">
+          <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+          <main className="flex-1 p-4 md:p-8 overflow-auto">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/products" element={<Product />} />
+              <Route path="/categories" element={<Category />} />
+              <Route path="/orders" element={<Order />} />
+              <Route path="/payments" element={<Payment />} />
+              <Route path="/shipments" element={<Shipment />} />
+              <Route path="/users" element={<User />} />
+              <Route path="/reviews" element={<Review />} />
+              <Route path="/report" element={<SalesReport />} />
+              <Route path="/admins" element={<Admin />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </main>
+        </div>
+      </>
+    ) : (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    )}
+  </div>
+  
   );
 };
 

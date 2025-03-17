@@ -6,9 +6,10 @@ import EditCategoryModal from "../components/Category/EditCategoryModal";
 import ViewCategoryModal from "../components/Category/ViewCategoryModal";
 import DeleteCategoryModal from "../components/Category/DeleteCategoryModal";
 import { AppContext } from "../context/AppContext";
+import customStyles from "../mod/tableSyles";
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+  <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
     <input
       id="search"
       type="text"
@@ -29,7 +30,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 
 const Category = () => {
   useEffect(() => {
-    document.title = "AS Denim | Dashboard - Kategori";
+    document.title = "Yulita Cakes | Dashboard - Kategori";
     fetchCategories();
   }, []);
 
@@ -43,7 +44,9 @@ const Category = () => {
   // Mengambil data kategori menggunakan fetch
   const fetchCategories = async () => {
     try {
-      const response = await authFetch("http://127.0.0.1:8000/api/admin/category");
+      const response = await authFetch(
+        "http://127.0.0.1:8000/api/admin/category"
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -146,17 +149,17 @@ const Category = () => {
       wrap: true,
       minWidth: "200px",
     },
-    {
-      name: "Slug",
-      selector: (row) => row.slug,
-      sortable: true,
-      omit: isMobile, // Sembunyikan kolom ini pada layar kecil
-    },
+    // {
+    //   name: "Slug",
+    //   selector: (row) => row.slug,
+    //   sortable: true,
+    //   omit: isMobile, // Sembunyikan kolom ini pada layar kecil
+    // },
     {
       name: "Gambar",
       selector: (row) => row.image,
       cell: (row) => (
-        <div className="p-2 bg-gray-100 rounded-lg">
+        <div className="p-2 rounded-lg">
           <img
             src={`http://127.0.0.1:8000/storage/${row.image}`}
             alt={row.category_name}
@@ -201,74 +204,17 @@ const Category = () => {
     },
   ];
 
-  const customStyles = {
-    table: {
-      style: {
-        backgroundColor: "#fff",
-        border: "1px solid #e5e7eb",
-        borderRadius: "0.5rem",
-        overflow: "hidden",
-      },
-    },
-    header: {
-      style: {
-        fontSize: "1.25rem",
-        fontWeight: "bold",
-        padding: "1rem",
-        backgroundColor: "#f8fafc",
-        borderBottom: "2px solid #e5e7eb",
-      },
-    },
-    headRow: {
-      style: {
-        backgroundColor: "#f3f4f6",
-        borderBottomWidth: "2px",
-      },
-    },
-    headCells: {
-      style: {
-        fontSize: "0.875rem",
-        fontWeight: "600",
-        padding: "0.75rem 1rem",
-        color: "#374151",
-      },
-    },
-    cells: {
-      style: {
-        fontSize: "0.875rem",
-        padding: "0.75rem 1rem",
-        color: "#4b5563",
-      },
-    },
-    pagination: {
-      style: {
-        borderTop: "1px solid #e5e7eb",
-        padding: "1rem",
-      },
-    },
-    responsiveWrapper: {
-      style: {
-        borderRadius: "0.5rem",
-      },
-    },
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
-          Kategori Produk
-        </h1>
-        <button
-          onClick={openAddModal}
-          className="flex items-center bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
-        >
+        <h1 className="text-2xl font-bold mb-4 sm:mb-0">Kategori Produk</h1>
+        <button onClick={openAddModal} className="tombol-pink">
           <FaPlus className="mr-2 text-lg" />
           Tambah Kategori
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+      <div className="  rounded-xl overflow-x-auto">
         {loadingCategories ? (
           <p className="text-center text-gray-500">Memuat kategori...</p>
         ) : errorCategories ? (
@@ -276,30 +222,32 @@ const Category = () => {
             Terjadi kesalahan saat mengambil kategori.
           </p>
         ) : (
-          <DataTable
-            columns={columns}
-            data={filteredCategories}
-            pagination
-            paginationPerPage={5}
-            paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
-            paginationComponentOptions={{
-              rowsPerPageText: "Baris per halaman:",
-              rangeSeparatorText: "dari",
-            }}
-            paginationResetDefaultPage={resetPaginationToggle}
-            subHeader
-            subHeaderComponent={subHeaderComponent}
-            persistTableHead
-            responsive
-            highlightOnHover
-            striped
-            customStyles={customStyles}
-            noDataComponent={
-              <div className="p-4 text-center text-gray-500">
-                Tidak ada data kategori
-              </div>
-            }
-          />
+          <div className="bg-white rounded-xl shadow-lg p-3 overflow-x-auto">
+            <DataTable
+              columns={columns}
+              data={filteredCategories}
+              pagination
+              paginationPerPage={10}
+              paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
+              paginationComponentOptions={{
+                rowsPerPageText: "Baris per halaman:",
+                rangeSeparatorText: "dari",
+              }}
+              paginationResetDefaultPage={resetPaginationToggle}
+              subHeader
+              subHeaderComponent={subHeaderComponent}
+              persistTableHead
+              responsive
+              highlightOnHover
+              striped
+              customStyles={customStyles}
+              noDataComponent={
+                <div className="p-4 text-center text-gray-500">
+                  Tidak ada data kategori
+                </div>
+              }
+            />
+          </div>
         )}
       </div>
 

@@ -22,12 +22,12 @@ const OrdersChart = () => {
         const response = await authFetch("/api/admin/dashboard/orders_data", {
           method: "GET",
         });
-        if (!response.ok) throw new Error("Gagal mengambil data orders chart");
+        if (!response.ok) throw new Error("Gagal mengambil data Statistik Pesanan");
         const chartData = await response.json();
         setData(chartData);
       } catch (error) {
         console.error(error);
-        toast.error("Terjadi kesalahan saat mengambil data orders chart");
+        toast.error("Terjadi kesalahan saat mengambil data Statistik Pesanan");
       } finally {
         setLoading(false);
       }
@@ -36,11 +36,11 @@ const OrdersChart = () => {
     fetchOrdersChartData();
   }, [authFetch]);
 
-  if (loading) return <div className="p-4 text-center text-gray-500">Loading chart...</div>;
+  if (loading) return <div className="p-4 text-center text-gray-500">Memuat Grafik...</div>;
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Orders Over Time</h2>
+      <h2 className="text-xl bg-pink-200 inline-block p-2 px-5 rounded-lg font-bold mb-4">Statistik Pesanan</h2>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>
           <CartesianGrid stroke="#e5e7eb" strokeDasharray="5 5" />

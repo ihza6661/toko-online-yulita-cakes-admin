@@ -4,6 +4,8 @@ import { FaEye, FaBan, FaCheck } from "react-icons/fa";
 import UserDetailModal from "../components/User/UserDetailModal";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import customStyles from "../mod/tableSyles";
+
 
 // Komponen Filter untuk pencarian dan reset
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
@@ -35,7 +37,7 @@ const User = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   useEffect(() => {
-    document.title = "AS Denim | Dashboard - Pengguna";
+    document.title = "Yulita Cakes | Dashboard - Pengguna";
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -212,61 +214,10 @@ const User = () => {
     },
   ];
 
-  const customStyles = {
-    table: {
-      style: {
-        backgroundColor: "#fff",
-        border: "1px solid #e5e7eb",
-        borderRadius: "0.5rem",
-        overflow: "hidden",
-      },
-    },
-    header: {
-      style: {
-        fontSize: "1.25rem",
-        fontWeight: "bold",
-        padding: "1rem",
-        backgroundColor: "#f8fafc",
-        borderBottom: "2px solid #e5e7eb",
-      },
-    },
-    headRow: {
-      style: {
-        backgroundColor: "#f3f4f6",
-        borderBottomWidth: "2px",
-      },
-    },
-    headCells: {
-      style: {
-        fontSize: "0.875rem",
-        fontWeight: "600",
-        padding: "0.75rem 1rem",
-        color: "#374151",
-      },
-    },
-    cells: {
-      style: {
-        fontSize: "0.875rem",
-        padding: "0.75rem 1rem",
-        color: "#4b5563",
-      },
-    },
-    pagination: {
-      style: {
-        borderTop: "1px solid #e5e7eb",
-        padding: "1rem",
-      },
-    },
-    responsiveWrapper: {
-      style: {
-        borderRadius: "0.5rem",
-      },
-    },
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Pengguna</h1>
+      <h1 className="text-3xl font-bold mb-6">Pengguna</h1>
       <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
         {loadingUser ? (
           <div className="p-4 text-center text-gray-500">
@@ -277,8 +228,8 @@ const User = () => {
             columns={columns}
             data={filteredUsers}
             pagination
-            paginationPerPage={5}
-            paginationRowsPerPageOptions={[5, 10, 15, 20, 50]}
+            paginationPerPage={10}
+            paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
             paginationComponentOptions={{
               rowsPerPageText: "Baris per halaman:",
               rangeSeparatorText: "dari",

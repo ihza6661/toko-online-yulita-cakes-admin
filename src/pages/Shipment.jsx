@@ -4,10 +4,11 @@ import { FaEye } from "react-icons/fa";
 import ShipmentDetailModal from "../components/Shipment/ShipmentDetailModal";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import customStyles from "../mod/tableSyles";
 
 // Komponen Filter untuk pencarian dan reset
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
+  <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
     <input
       id="search"
       type="text"
@@ -34,19 +35,22 @@ const Shipment = () => {
 
   // Set judul halaman
   useEffect(() => {
-    document.title = "AS Denim | Dashboard - Pengiriman";
+    document.title = "Yulita Cakes | Dashboard - Pengiriman";
   }, []);
 
   // Ambil data pengiriman dari backend
   useEffect(() => {
     const fetchShipments = async () => {
       try {
-        const response = await authFetch("http://127.0.0.1:8000/api/admin/shipments", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-          },
-        });
+        const response = await authFetch(
+          "http://127.0.0.1:8000/api/admin/shipments",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         // Ambil data dari key shipments
@@ -79,14 +83,17 @@ const Shipment = () => {
   // Fungsi untuk memperbarui data pengiriman melalui API
   const updateShipment = async (shipmentId, updatedData) => {
     try {
-      const response = await authFetch(`http://127.0.0.1:8000/api/admin/shipments/${shipmentId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(updatedData),
-      });
+      const response = await authFetch(
+        `http://127.0.0.1:8000/api/admin/shipments/${shipmentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Gagal memperbarui pengiriman.");
@@ -94,7 +101,9 @@ const Shipment = () => {
       // Perbarui state secara optimistik
       setShipments((prevShipments) =>
         prevShipments.map((shipment) =>
-          shipment.id === shipmentId ? { ...shipment, ...updatedData } : shipment
+          shipment.id === shipmentId
+            ? { ...shipment, ...updatedData }
+            : shipment
         )
       );
       toast.success(data.message);
@@ -109,10 +118,17 @@ const Shipment = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   // Filter data pengiriman berdasarkan nomor pesanan atau nama pelanggan
-  const filteredShipments = shipments.filter((shipment) =>
-    ((shipment.order?.order_number || "").toLowerCase().includes(filterText.toLowerCase())) ||
-    ((shipment.order?.user?.name || "").toLowerCase().includes(filterText.toLowerCase())) ||
-    ((shipment.tracking_number || "").toLowerCase().includes(filterText.toLowerCase()))
+  const filteredShipments = shipments.filter(
+    (shipment) =>
+      (shipment.order?.order_number || "")
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) ||
+      (shipment.order?.user?.name || "")
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) ||
+      (shipment.tracking_number || "")
+        .toLowerCase()
+        .includes(filterText.toLowerCase())
   );
 
   // Sub Header untuk DataTable (filter pencarian)
@@ -198,61 +214,9 @@ const Shipment = () => {
     },
   ];
 
-  const customStyles = {
-    table: {
-      style: {
-        backgroundColor: "#fff",
-        border: "1px solid #e5e7eb",
-        borderRadius: "0.5rem",
-        overflow: "hidden",
-      },
-    },
-    header: {
-      style: {
-        fontSize: "1.25rem",
-        fontWeight: "bold",
-        padding: "1rem",
-        backgroundColor: "#f8fafc",
-        borderBottom: "2px solid #e5e7eb",
-      },
-    },
-    headRow: {
-      style: {
-        backgroundColor: "#f3f4f6",
-        borderBottomWidth: "2px",
-      },
-    },
-    headCells: {
-      style: {
-        fontSize: "0.875rem",
-        fontWeight: "600",
-        padding: "0.75rem 1rem",
-        color: "#374151",
-      },
-    },
-    cells: {
-      style: {
-        fontSize: "0.875rem",
-        padding: "0.75rem 1rem",
-        color: "#4b5563",
-      },
-    },
-    pagination: {
-      style: {
-        borderTop: "1px solid #e5e7eb",
-        padding: "1rem",
-      },
-    },
-    responsiveWrapper: {
-      style: {
-        borderRadius: "0.5rem",
-      },
-    },
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Pengiriman</h1>
+      <h1 className="text-3xl font-bold mb-6">Pengiriman</h1>
       {loadingShipments ? (
         <p className="text-center text-gray-500">Memuat pengiriman...</p>
       ) : errorShipments ? (
@@ -260,13 +224,13 @@ const Shipment = () => {
           Terjadi kesalahan saat mengambil pengiriman.
         </p>
       ) : (
-        <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+        <div className="bg-white rounded-xl shadow-lg p-3 overflow-x-auto">
           <DataTable
             columns={columns}
             data={filteredShipments}
             pagination
-            paginationPerPage={5}
-            paginationRowsPerPageOptions={[5, 10, 15, 20, 50]}
+            paginationPerPage={10}
+            paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
             paginationComponentOptions={{
               rowsPerPageText: "Baris per halaman:",
               rangeSeparatorText: "dari",

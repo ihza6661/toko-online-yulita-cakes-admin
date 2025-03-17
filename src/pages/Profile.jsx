@@ -9,7 +9,7 @@ const Profile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "AS Denim | Dashboard - Profil";
+    document.title = "Yulita Cakes | Dashboard - Profil";
 
     const fetchProfile = async () => {
       try {
@@ -43,7 +43,7 @@ const Profile = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Profil Admin</h1>
+      <h1 className="text-3xl font-bold mb-6">Profil Admin</h1>
       <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
@@ -76,7 +76,7 @@ const Profile = () => {
           <button
             type="button"
             onClick={() => setIsEditModalOpen(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
+            className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
           >
             Edit Profil
           </button>

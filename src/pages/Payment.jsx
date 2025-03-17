@@ -4,10 +4,11 @@ import { FaEye } from "react-icons/fa";
 import PaymentDetailModal from "../components/Payment/PaymentDetailModal";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import customStyles from "../mod/tableSyles";
 
 // Komponen Filter untuk pencarian dan reset
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
+  <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
     <input
       id="search"
       type="text"
@@ -36,12 +37,15 @@ const Payment = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await authFetch("http://127.0.0.1:8000/api/admin/payments", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-          },
-        });
+        const response = await authFetch(
+          "http://127.0.0.1:8000/api/admin/payments",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         // Ambil array data dari key payments
@@ -74,14 +78,17 @@ const Payment = () => {
   // Fungsi untuk mengupdate status pembayaran melalui backend
   const updatePaymentStatus = async (paymentId, newStatus) => {
     try {
-      const response = await authFetch(`http://127.0.0.1:8000/api/admin/payments/${paymentId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const response = await authFetch(
+        `http://127.0.0.1:8000/api/admin/payments/${paymentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Gagal memperbarui status pembayaran.");
@@ -106,9 +113,13 @@ const Payment = () => {
   // Filter data pembayaran berdasarkan No. Pesanan atau Nama Pelanggan
   const filteredPayments = payments.filter(
     (payment) =>
-      payment.order?.order_number.toLowerCase().includes(filterText.toLowerCase()) ||
+      payment.order?.order_number
+        .toLowerCase()
+        .includes(filterText.toLowerCase()) ||
       (payment.order?.user?.name &&
-        payment.order.user.name.toLowerCase().includes(filterText.toLowerCase()))
+        payment.order.user.name
+          .toLowerCase()
+          .includes(filterText.toLowerCase()))
   );
 
   // Sub Header untuk DataTable (filter pencarian)
@@ -213,61 +224,9 @@ const Payment = () => {
     },
   ];
 
-  const customStyles = {
-    table: {
-      style: {
-        backgroundColor: "#fff",
-        border: "1px solid #e5e7eb",
-        borderRadius: "0.5rem",
-        overflow: "hidden",
-      },
-    },
-    header: {
-      style: {
-        fontSize: "1.25rem",
-        fontWeight: "bold",
-        padding: "1rem",
-        backgroundColor: "#f8fafc",
-        borderBottom: "2px solid #e5e7eb",
-      },
-    },
-    headRow: {
-      style: {
-        backgroundColor: "#f3f4f6",
-        borderBottomWidth: "2px",
-      },
-    },
-    headCells: {
-      style: {
-        fontSize: "0.875rem",
-        fontWeight: "600",
-        padding: "0.75rem 1rem",
-        color: "#374151",
-      },
-    },
-    cells: {
-      style: {
-        fontSize: "0.875rem",
-        padding: "0.75rem 1rem",
-        color: "#4b5563",
-      },
-    },
-    pagination: {
-      style: {
-        borderTop: "1px solid #e5e7eb",
-        padding: "1rem",
-      },
-    },
-    responsiveWrapper: {
-      style: {
-        borderRadius: "0.5rem",
-      },
-    },
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Pembayaran</h1>
+      <h1 className="text-3xl font-bold mb-6">Pembayaran</h1>
       {loadingPayments ? (
         <p className="text-center text-gray-500">Memuat pembayaran...</p>
       ) : errorPayments ? (
@@ -275,13 +234,13 @@ const Payment = () => {
           Terjadi kesalahan saat mengambil pembayaran.
         </p>
       ) : (
-        <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
+        <div className="bg-white rounded-xl shadow-lg p-3 overflow-x-auto">
           <DataTable
             columns={columns}
             data={filteredPayments}
             pagination
-            paginationPerPage={5}
-            paginationRowsPerPageOptions={[5, 10, 15, 20, 50]}
+            paginationPerPage={10}
+            paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
             paginationComponentOptions={{
               rowsPerPageText: "Baris per halaman:",
               rangeSeparatorText: "dari",

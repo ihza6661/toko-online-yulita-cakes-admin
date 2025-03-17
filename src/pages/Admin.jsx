@@ -6,23 +6,26 @@ import EditAdminModal from "../components/Admin/EditAdminModal";
 import ViewAdminModal from "../components/Admin/ViewAdminModal";
 import DeleteAdminModal from "../components/Admin/DeleteAdminModal";
 import { AppContext } from "../context/AppContext";
+import customStyles from "../mod/tableSyles";
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
     <input
-      type="text"
-      placeholder="Cari Admin..."
-      aria-label="Search Input"
-      value={filterText}
-      onChange={onFilter}
-      className="border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all w-full sm:w-72"
-    />
+  type="text"
+  placeholder="Cari Admin..."
+  aria-label="Search Input"
+  value={filterText}
+  onChange={onFilter}
+  className="border border-purple-400 bg-purple-100 px-4 py-2 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all w-full sm:w-72 placeholder-purple-600 text-purple-900"
+ />
+
     <button
-      onClick={onClear}
-      className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors duration-200 w-full sm:w-auto"
-    >
-      Reset Pencarian
-    </button>
+  onClick={onClear}
+  className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors duration-200 w-full sm:w-auto"
+>
+  Reset Pencarian
+</button>
+
   </div>
 );
 
@@ -44,7 +47,7 @@ const Admin = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   useEffect(() => {
-    document.title = "AS Denim | Dashboard - Admin";
+    document.title = "Yulita Cakes | Dashboard - Admin";
 
     // Panggil API untuk mengambil data admin
     authFetch("/api/admin/admin")
@@ -187,73 +190,22 @@ const Admin = () => {
     },
   ];
 
-  // Custom styles untuk DataTable
-  const customStyles = {
-    table: {
-      style: {
-        backgroundColor: "#fff",
-        border: "1px solid #e5e7eb",
-        borderRadius: "0.5rem",
-        overflow: "hidden",
-      },
-    },
-    header: {
-      style: {
-        fontSize: "1.25rem",
-        fontWeight: "bold",
-        padding: "1rem",
-        backgroundColor: "#f8fafc",
-        borderBottom: "2px solid #e5e7eb",
-      },
-    },
-    headRow: {
-      style: {
-        backgroundColor: "#f3f4f6",
-        borderBottomWidth: "2px",
-      },
-    },
-    headCells: {
-      style: {
-        fontSize: "0.875rem",
-        fontWeight: "600",
-        padding: "0.75rem 1rem",
-        color: "#374151",
-      },
-    },
-    cells: {
-      style: {
-        fontSize: "0.875rem",
-        padding: "0.75rem 1rem",
-        color: "#4b5563",
-      },
-    },
-    pagination: {
-      style: {
-        borderTop: "1px solid #e5e7eb",
-        padding: "1rem",
-      },
-    },
-    responsiveWrapper: {
-      style: {
-        borderRadius: "0.5rem",
-      },
-    },
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header: judul dan tombol tambah admin */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 sm:mb-0">
+        <h1 className="text-3xl font-bold mb-4 sm:mb-0">
           Kelola Admin
         </h1>
         <button
-          onClick={openAddModal}
-          className="flex items-center bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
-        >
-          <FaPlus className="mr-2 text-lg" />
-          Tambah Admin
-        </button>
+  onClick={openAddModal}
+  className="flex items-center bg-pink-600 text-white px-5 py-2.5 rounded-lg hover:bg-pink-700 transition-colors shadow-md hover:shadow-lg"
+>
+  <FaPlus className="mr-2 text-lg" />
+  Tambah Admin
+</button>
+
       </div>
       {/* Tabel DataTable */}
       <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
@@ -264,7 +216,7 @@ const Admin = () => {
             columns={columns}
             data={filteredAdmins}
             pagination
-            paginationPerPage={5}
+            paginationPerPage={10}
             paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
             paginationComponentOptions={{
               rowsPerPageText: "Baris per halaman:",

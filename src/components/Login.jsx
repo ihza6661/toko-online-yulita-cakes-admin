@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "AS Denim | Masuk";
+    document.title = "Yulita Cakes | Masuk";
     if (token) {
       navigate("/admin/dashboard");
     }
@@ -45,41 +45,42 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center w-full bg-gray-50">
-      <div className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md">
-        <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <p className="text-sm font-medium text-gray-700 mb-2">Alamat Email</p>
-            <input
-              type="email"
-              placeholder="Masukan email anda"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
-            />
-          </div>
-          <div className="mb-3">
-            <p className="text-sm font-medium text-gray-700 mb-2">Kata Sandi</p>
-            <input
-              type="password"
-              placeholder="Masukan password anda"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
-            />
-          </div>
-          <button
-            type="submit"
-            className="mt-2 w-full py-2 px-4 text-white bg-black rounded-md"
-          >
-            Masuk
-          </button>
-        </form>
+    <div className="min-h-screen flex items-center justify-center w-full bg-pink-50 px-4">
+  <div className="bg-white border border-pink-300 shadow-lg rounded-xl px-6 py-8 w-full max-w-sm md:max-w-md lg:max-w-lg">
+    <h1 className="text-3xl font-semibold text-pink-700 text-center mb-6">Admin Panel <br /> Yulita Cakes</h1>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Alamat Email</label>
+        <input
+          type="email"
+          placeholder="Masukkan email anda"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-pink-400 transition"
+        />
       </div>
-    </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Kata Sandi</label>
+        <input
+          type="password"
+          placeholder="Masukkan password anda"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-pink-400 transition"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full py-2 px-4 text-white bg-pink-600 rounded-lg hover:bg-pink-700 transition font-medium"
+      >
+        Masuk
+      </button>
+    </form>
+  </div>
+</div>
+
   );
 };
 
