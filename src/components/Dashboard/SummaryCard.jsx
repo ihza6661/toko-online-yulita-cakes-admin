@@ -9,3 +9,6 @@ const SummaryCard = ({ title, value, icon, className }) => {
     </div>
   );
 };
+
+
+export default SummaryCard;

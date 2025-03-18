@@ -140,7 +140,7 @@ const Category = () => {
       name: "No",
       cell: (row, index) => <div>{index + 1}</div>,
       width: "60px",
-      center: true,
+      // center: true,
     },
     {
       name: "Nama Kategori",
@@ -149,12 +149,12 @@ const Category = () => {
       wrap: true,
       minWidth: "200px",
     },
-    // {
-    //   name: "Slug",
-    //   selector: (row) => row.slug,
-    //   sortable: true,
-    //   omit: isMobile, // Sembunyikan kolom ini pada layar kecil
-    // },
+    {
+      name: "Slug",
+      selector: (row) => row.slug,
+      sortable: true,
+      omit: isMobile, // Sembunyikan kolom ini pada layar kecil
+    },
     {
       name: "Gambar",
       selector: (row) => row.image,
