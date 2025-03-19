@@ -292,82 +292,80 @@ const SalesReport = () => {
 
       {/* Form Filter Tanggal */}
       <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          fetchSalesReports();
-        }}
-        className="flex flex-wrap gap-3 my-3"
-      >
-        <div>
-          <label className="block text-gray-700 mb-1">Tanggal Mulai</label>
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="border p-2 rounded"
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 mb-1">Tanggal Selesai</label>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="border p-2 rounded"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-pink-400 text-white px-4 py-2 rounded-xl self-end"
-        >
-          Filter
-        </button>
-      </form>
-
-      <FilterComponent
-        filterText={filterText}
-        onFilter={handleFilter}
-        onClear={handleClear}
-      />
-
-      {/* Tombol Download PDF */}
-      <div className="mb-4">
-        <button
-          onClick={downloadPDF}
-          className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition-colors duration-200"
-        >
-          Download PDF
-        </button>
-      </div>
-
-      <div className="bg-white rounded-xl shadow-lg p-3 overflow-x-auto">
-
-        <DataTable
-          columns={columns}
-          data={filteredReports}
-          pagination
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
-          paginationComponentOptions={{
-            rowsPerPageText: "Baris per halaman:",
-            rangeSeparatorText: "dari",
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            fetchSalesReports();
           }}
-          responsive
-          highlightOnHover
-          striped
-          customStyles={customStyles}
-          paginationResetDefaultPage={resetPaginationToggle}
-          noDataComponent={
-            <div className="p-4 text-center text-gray-500">
-              Belum ada laporan penjualan.
-            </div>
-          }
+          className="flex flex-wrap gap-3 my-3"
+        >
+          <div>
+            <label className="block text-gray-700 mb-1">Tanggal Mulai</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border p-2 rounded"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Tanggal Selesai</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border p-2 rounded"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-pink-400 text-white px-4 py-2 rounded-xl self-end"
+          >
+            Filter
+          </button>
+        </form>
+
+        <FilterComponent
+          filterText={filterText}
+          onFilter={handleFilter}
+          onClear={handleClear}
         />
+
+        {/* Tombol Download PDF */}
+        <div className="mb-4">
+          <button
+            onClick={downloadPDF}
+            className="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600 transition-colors duration-200"
+          >
+            Download PDF
+          </button>
+        </div>
+
+        <div className="bg-white border-2 border-gray-300 rounded-xl overflow-x-auto">
+          <DataTable
+            columns={columns}
+            data={filteredReports}
+            pagination
+            paginationPerPage={10}
+            paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
+            paginationComponentOptions={{
+              rowsPerPageText: "Baris per halaman:",
+              rangeSeparatorText: "dari",
+            }}
+            responsive
+            highlightOnHover
+            striped
+            customStyles={customStyles}
+            paginationResetDefaultPage={resetPaginationToggle}
+            noDataComponent={
+              <div className="p-4 text-center text-gray-500">
+                Belum ada laporan penjualan.
+              </div>
+            }
+          />
+        </div>
       </div>
-      </div>
-      </div>
+    </div>
   );
 };
 

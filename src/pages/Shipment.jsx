@@ -224,7 +224,7 @@ const Shipment = () => {
           Terjadi kesalahan saat mengambil pengiriman.
         </p>
       ) : (
-        <div className="bg-white rounded-xl shadow-lg p-3 overflow-x-auto">
+        <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
           <DataTable
             columns={columns}
             data={filteredShipments}

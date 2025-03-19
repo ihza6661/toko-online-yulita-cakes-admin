@@ -234,7 +234,7 @@ const Payment = () => {
           Terjadi kesalahan saat mengambil pembayaran.
         </p>
       ) : (
-        <div className="bg-white rounded-xl shadow-lg p-3 overflow-x-auto">
+        <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
           <DataTable
             columns={columns}
             data={filteredPayments}
