@@ -37,7 +37,7 @@ const User = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashboard - Pengguna";
+    document.title = "Dasbor - Pengguna";
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

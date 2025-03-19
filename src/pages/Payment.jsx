@@ -33,6 +33,10 @@ const Payment = () => {
   const [loadingPayments, setLoadingPayments] = useState(true);
   const [errorPayments, setErrorPayments] = useState(null);
 
+  useEffect(() => {
+    document.title = "Dasbor - Pembayaran";
+  }, []);
+
   // Ambil data pembayaran dari backend.
   useEffect(() => {
     const fetchPayments = async () => {

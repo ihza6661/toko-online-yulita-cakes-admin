@@ -8,7 +8,7 @@ import customStyles from "../mod/tableSyles";
 
 const Review = () => {
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashbor - Ulasan";
+    document.title = "Dashbor - Ulasan";
   }, []);
 
   const { authFetch } = useContext(AppContext);

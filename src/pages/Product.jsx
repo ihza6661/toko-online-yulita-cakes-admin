@@ -30,7 +30,7 @@ const ProductFilterComponent = ({ filterText, onFilter, onClear }) => (
 
 const Product = () => {
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashboard - Produk";
+    document.title = "Dasbor - Produk";
   }, []);
 
   // State untuk menyimpan data produk yang diambil dari API

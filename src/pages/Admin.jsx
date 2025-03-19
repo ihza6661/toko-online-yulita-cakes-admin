@@ -47,7 +47,7 @@ const Admin = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashboard - Admin";
+    document.title = "Dasbor - Admin";
 
     // Panggil API untuk mengambil data admin
     authFetch("/api/admin/admin")

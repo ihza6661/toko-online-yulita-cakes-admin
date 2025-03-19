@@ -29,7 +29,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 
 const Order = () => {
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashboard - Pesanan";
+    document.title = "Dasbor - Pesanan";
   }, []);
 
   // State untuk data pesanan

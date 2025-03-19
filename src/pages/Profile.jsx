@@ -9,7 +9,7 @@ const Profile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashboard - Profil";
+    document.title = "Dasbor - Profil";
 
     const fetchProfile = async () => {
       try {

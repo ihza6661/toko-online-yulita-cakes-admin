@@ -35,7 +35,7 @@ const Shipment = () => {
 
   // Set judul halaman
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashboard - Pengiriman";
+    document.title = "Dasbor - Pengiriman";
   }, []);
 
   // Ambil data pengiriman dari backend

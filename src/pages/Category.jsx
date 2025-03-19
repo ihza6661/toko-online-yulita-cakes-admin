@@ -30,7 +30,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 
 const Category = () => {
   useEffect(() => {
-    document.title = "Yulita Cakes | Dashboard - Kategori";
+    document.title = "Dasbor - Kategori";
     fetchCategories();
   }, []);
 

@@ -34,6 +34,10 @@ const SalesReport = () => {
   const [filterText, setFilterText] = useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
+  useEffect(() => {
+    document.title = "Dasbor - Laporan Penjualan";
+  }, []);
+
   // Fungsi untuk memformat tanggal ke format "01 Mar 2025, 11.07"
   const formatDateIndo = (dateStr) => {
     const dateObj = new Date(dateStr);
