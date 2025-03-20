@@ -10,6 +10,8 @@ import {
 } from "recharts";
 import { AppContext } from "../../context/AppContext";
 import { toast } from "react-toastify";
+import { Card, CardContent } from "@/components/ui/card";
+
 
 const OrdersChart = () => {
   const { authFetch } = useContext(AppContext);
@@ -39,21 +41,32 @@ const OrdersChart = () => {
   if (loading) return <div className="p-4 text-center text-gray-500">Memuat Grafik...</div>;
 
   return (
-    <div>
-      <h2 className="text-xl bg-pink-200 inline-block p-2 px-5 rounded-lg font-bold mb-4">Statistik Pesanan</h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data}>
-          <CartesianGrid stroke="#e5e7eb" strokeDasharray="5 5" />
-          <XAxis dataKey="name" />
-          <YAxis />
+
+    <div className="flex flex-col items-center space-y-6">
+  {/* Heading */}
+  <h2 className="text-2xl bg-pink-200 text-pink-800 shadow-lg px-6 py-3 rounded-xl font-bold tracking-wide">
+    Statistik Pesanan
+  </h2>
+
+
+    <Card className="w-full max-w-3xl bg-pink-100 shadow-xl rounded-2xl p-6 border border-gray-200">
+    <CardContent className="p-0">
+      <ResponsiveContainer width="100%" height={320}>
+        <BarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 40 }}>
+          <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" />
+          <XAxis dataKey="name" tick={{ fill: "#374151" }} />
+          <YAxis tick={{ fill: "#374151" }} />
           <Tooltip
+            contentStyle={{ backgroundColor: "white", borderRadius: "8px", border: "1px solid #ddd" }}
             formatter={(value) => `${value} orders`}
             labelFormatter={(label) => `Month: ${label}`}
           />
-          <Bar dataKey="Orders" fill="#10b981" barSize={40} />
+          <Bar dataKey="Orders" fill="#10b981" barSize={40} radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </CardContent>
+  </Card>
+  </div>
   );
 };
 

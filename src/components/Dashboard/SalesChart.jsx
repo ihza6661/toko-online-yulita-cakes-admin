@@ -10,6 +10,9 @@ import {
 } from "recharts";
 import { AppContext } from "../../context/AppContext";
 import { toast } from "react-toastify";
+import { Card, CardContent } from "@/components/ui/card";
+
+
 
 const SalesChart = () => {
   const { authFetch } = useContext(AppContext);
@@ -42,31 +45,47 @@ const SalesChart = () => {
     );
 
   return (
-    <div>
-      <h2 className="text-xl bg-pink-200 inline-block p-2 px-5 rounded-lg font-bold mb-4">Grafik Penjualan</h2>
-      <ResponsiveContainer width="100%" height={300}>
+
+<div className="flex flex-col items-center space-y-6">
+  {/* Heading */}
+  <h2 className="text-2xl bg-pink-200 text-pink-800 shadow-lg px-6 py-3 rounded-xl font-bold tracking-wide">
+    Grafik Penjualan
+  </h2>
+
+  {/* Card Container */}
+  <Card className="w-full max-w-3xl bg-pink-100 shadow-xl rounded-2xl p-6 border border-gray-200">
+    <CardContent className="p-0">
+      <ResponsiveContainer width="100%" height={320}>
         <LineChart
           data={data}
-          margin={{ top: 20, right: 20, bottom: 20, left: 50 }}
+          margin={{ top: 20, right: 30, bottom: 20, left: 40 }}
         >
-          <CartesianGrid stroke="#e5e7eb" strokeDasharray="5 5" />
-          <XAxis dataKey="name" />
+          <CartesianGrid stroke="#e2e8f0" strokeDasharray="3 3" />
+          <XAxis dataKey="name" tick={{ fill: "#374151" }} />
           <YAxis
+            tick={{ fill: "#374151" }}
             tickFormatter={(value) => `Rp ${value.toLocaleString("id-ID")}`}
           />
           <Tooltip
+            contentStyle={{ backgroundColor: "white", borderRadius: "8px", border: "1px solid #ddd" }}
             formatter={(value) => `Rp ${value.toLocaleString("id-ID")}`}
             labelFormatter={(label) => `Month: ${label}`}
           />
           <Line
             type="monotone"
             dataKey="Sales"
-            stroke="#3b82f6"
-            strokeWidth={2}
+            stroke="#2563eb"
+            strokeWidth={3}
+            dot={{ r: 6, fill: "#2563eb" }}
+            activeDot={{ r: 8, fill: "#1e40af", stroke: "#1e40af", strokeWidth: 2 }}
           />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </CardContent>
+  </Card>
+</div>
+
+
   );
 };
 
