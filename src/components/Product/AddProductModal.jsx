@@ -14,6 +14,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
     stock: "",
     weight: "",
     description: "",
+    label: "",
   });
 
   const [categories, setCategories] = useState([]);
@@ -140,6 +141,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
           stock: "",
           weight: "",
           description: "",
+          label: "",
         });
         setImageFiles([]);
         setImagePreviews([]);
@@ -161,7 +163,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Nama Produk */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-pink-700 mb-1">
             Nama Produk
           </label>
           <input
@@ -172,8 +174,8 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
             required
             placeholder="Misal: Blue Jeans"
             className={`w-full border ${
-              errors.product_name ? "border-red-500" : "border-gray-300"
-            } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              errors.product_name ? "border-red-500" : "border-pink-300"
+            } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300`}
           />
           {errors.product_name && (
             <p className="text-red-500 text-sm mt-1">
@@ -183,7 +185,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
         </div>
         {/* Kategori */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-pink-700 mb-1">
             Kategori
           </label>
           <select
@@ -192,8 +194,8 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
             onChange={handleChange}
             required
             className={`w-full border ${
-              errors.category_id ? "border-red-500" : "border-gray-300"
-            } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              errors.category_id ? "border-red-500" : "border-pink-300"
+            } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300`}
           >
             <option value="">Pilih Kategori</option>
             {categories.map((category) => (
@@ -209,7 +211,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
         {/* Harga */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-pink-700 mb-1">
               Harga Asli
             </label>
             <input
@@ -220,8 +222,8 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
               required
               placeholder="Misal: 500000"
               className={`w-full border ${
-                errors.original_price ? "border-red-500" : "border-gray-300"
-              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                errors.original_price ? "border-red-500" : "border-pink-300"
+              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300`}
             />
             {errors.original_price && (
               <p className="text-red-500 text-sm mt-1">
@@ -230,7 +232,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-pink-700 mb-1">
               Harga Diskon
             </label>
             <input
@@ -240,8 +242,8 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
               onChange={handleChange}
               placeholder="Misal: 450000"
               className={`w-full border ${
-                errors.sale_price ? "border-red-500" : "border-gray-300"
-              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                errors.sale_price ? "border-red-500" : "border-pink-300"
+              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300`}
             />
             {errors.sale_price && (
               <p className="text-red-500 text-sm mt-1">
@@ -253,7 +255,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
         {/* Ukuran, Stok, Berat */}
         <div className="grid grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-pink-700 mb-1">
               Stok
             </label>
             <input
@@ -264,15 +266,15 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
               required
               placeholder="Misal: 100"
               className={`w-full border ${
-                errors.stock ? "border-red-500" : "border-gray-300"
-              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                errors.stock ? "border-red-500" : "border-pink-300"
+              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300`}
             />
             {errors.stock && (
               <p className="text-red-500 text-sm mt-1">{errors.stock[0]}</p>
             )}
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="">
+            <label className="block text-sm font-medium text-pink-700 mb-1">
               Berat (gram)
             </label>
             <input
@@ -283,24 +285,44 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
               required
               placeholder="Misal: 500"
               className={`w-full border ${
-                errors.weight ? "border-red-500" : "border-gray-300"
-              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                errors.weight ? "border-red-500" : "border-pink-300"
+              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300`}
             />
             {errors.weight && (
               <p className="text-red-500 text-sm mt-1">{errors.weight[0]}</p>
             )}
           </div>
+
+          <div className="">
+            <label className="block text-sm font-medium text-pink-700 mb-1">
+              Label
+            </label>
+            <input
+              type="string"
+              name="label"
+              value={formData.label}
+              onChange={handleChange}
+              required
+              placeholder="Misal: BestSeller"
+              className={`w-full border ${
+                errors.label ? "border-red-500" : "border-pink-300"
+              } px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-300`}
+            />
+            {errors.label && (
+              <p className="text-red-500 text-sm mt-1">{errors.label[0]}</p>
+            )}
+          </div>
         </div>
         {/* Deskripsi */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-pink-700 mb-1">
             Deskripsi
           </label>
           <ReactQuill
             theme="snow"
             value={formData.description}
             onChange={handleDescriptionChange}
-            className="bg-white rounded-md"
+            className="bg-white rounded-md border border-pink-300"
           />
           {errors.description && (
             <p className="text-red-500 text-sm mt-1">{errors.description[0]}</p>
@@ -308,7 +330,7 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
         </div>
         {/* Gambar */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-pink-700 mb-1">
             Gambar Produk
           </label>
           <input
@@ -344,13 +366,13 @@ const AddProductModal = ({ isOpen, onClose, setProducts }) => {
               onClose();
               setErrors({});
             }}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition duration-200"
+            className="bg-pink-100 text-pink-800 px-4 py-2 rounded-md hover:bg-pink-200 transition duration-200"
           >
             Batal
           </button>
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            className="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-pink-600 transition duration-200"
           >
             Simpan
           </button>

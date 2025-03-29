@@ -14,6 +14,7 @@ const EditProductModal = ({ isOpen, onClose, product, setProducts }) => {
     stock: "",
     weight: "",
     description: "",
+    label: "",
   });
 
   const [categories, setCategories] = useState([]);
@@ -41,6 +42,7 @@ const EditProductModal = ({ isOpen, onClose, product, setProducts }) => {
         stock: product.stock || "",
         weight: product.weight || "",
         description: product.description || "",
+        label: product.label || "",
       });
 
       // Set existing images
@@ -311,8 +313,7 @@ const EditProductModal = ({ isOpen, onClose, product, setProducts }) => {
         </div>
 
         {/* Size, Stock, Weight */}
-        <div className="grid grid-cols-3 gap-4">
-
+        <div className="grid grid-cols-2 gap-4">
           {/* Stock */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -352,6 +353,26 @@ const EditProductModal = ({ isOpen, onClose, product, setProducts }) => {
             />
             {errors.weight && (
               <p className="text-red-500 text-sm mt-1">{errors.weight[0]}</p>
+            )}
+          </div>
+          {/* Label */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Label
+            </label>
+            <input
+              type="string"
+              name="label"
+              value={formData.label}
+              onChange={handleChange}
+              required
+              placeholder="Misal: BestSeller"
+              className={`w-full px-4 py-2 border ${
+                errors.label ? "border-red-500" : "border-gray-300"
+              } rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200`}
+            />
+            {errors.label && (
+              <p className="text-red-500 text-sm mt-1">{errors.label[0]}</p>
             )}
           </div>
         </div>
