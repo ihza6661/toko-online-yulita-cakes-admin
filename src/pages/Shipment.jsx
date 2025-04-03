@@ -8,7 +8,7 @@ import customStyles from "../mod/tableSyles";
 
 // Komponen Filter untuk pencarian dan reset
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+  <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-start gap-3 w-full">
     <input
       id="search"
       type="text"

@@ -6,10 +6,10 @@ import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import customStyles from "../mod/tableSyles";
 
-
 // Komponen Filter untuk pencarian dan reset
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
+  // <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-6">
+  <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-start gap-3 w-full">
     <input
       type="text"
       placeholder="Cari Pengguna..."
@@ -213,7 +213,6 @@ const User = () => {
       minWidth: "100px",
     },
   ];
-
 
   return (
     <div className="container mx-auto px-4 py-8">

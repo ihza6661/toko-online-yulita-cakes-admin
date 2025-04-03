@@ -8,7 +8,8 @@ import customStyles from "../mod/tableSyles";
 
 // Komponen Filter (pencarian dan reset)
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-  <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+  // <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+  <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-start gap-3 w-full">
     <input
       id="search"
       type="text"
@@ -232,29 +233,29 @@ const Order = () => {
         </p>
       ) : (
         <div className="bg-white rounded-xl shadow-lg p-6 overflow-x-auto">
-        <DataTable
-          columns={columns}
-          data={filteredOrders}
-          pagination
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
-          paginationComponentOptions={{
-            rowsPerPageText: "Baris per halaman:",
-            rangeSeparatorText: "dari",
-          }}
-          responsive
-          highlightOnHover
-          striped
-          customStyles={customStyles}
-          subHeader
-          subHeaderComponent={subHeaderComponent}
-          noDataComponent={
-            <div className="p-4 text-center text-gray-500">
-              Tidak ada pesanan.
-            </div>
-          }
-        />
-         </div>
+          <DataTable
+            columns={columns}
+            data={filteredOrders}
+            pagination
+            paginationPerPage={10}
+            paginationRowsPerPageOptions={[10, 15, 20, 50, 100]}
+            paginationComponentOptions={{
+              rowsPerPageText: "Baris per halaman:",
+              rangeSeparatorText: "dari",
+            }}
+            responsive
+            highlightOnHover
+            striped
+            customStyles={customStyles}
+            subHeader
+            subHeaderComponent={subHeaderComponent}
+            noDataComponent={
+              <div className="p-4 text-center text-gray-500">
+                Tidak ada pesanan.
+              </div>
+            }
+          />
+        </div>
       )}
 
       {/* Modal Detail Pesanan */}
